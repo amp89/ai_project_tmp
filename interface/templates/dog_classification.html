@@ -2,47 +2,106 @@
 {% extends 'base.html' %}
 
 
-{% block title %}
-<h1>Dog Identifier</h1>
-{% endblock %}
-
-
 {% block content %}
 
 
 <div id="dogApp">
 
-    <div id="uploadBox">
-
-        <div v-if="loading">
-            Loading
-        </div>
-
-        <div v-else>
-            <label for="uploadFile">Dog Pic: </label>
-            <br>
-            <input id="uploadFile" type="file" name="uploadFile" @change=changeUploadFile>
-            <br>
-            
-            <img v-if="imageFileUrl" v-bind:src="imageFileUrl">
-            <br>
     
-            <button @click="uploadFile">Submit</button>
-            <button @click="clearForm">Reset Form</button>
-            <br>
 
+            <div class='container'>
+                
+                <div  v-if="!imageFileUrl" class="row center">
+                    <h3 class="header center orange-text">
+                        Upload a dog photo to get started!
+                    </h3>
+            
+                </div>
+                
+                <div class="row center">
+                    <div class="col s12 m3 offset-m3">
+                            <div class="file-field input-field">
+                                <div class="waves-effect waves-light btn">
+                                    Upload a Dog Photo                            
+                                    <input id="uploadFile" type="file" name="uploadFile" @change=changeUploadFile>
+                                </div>
+                            </div>
+                    </div>
+                </div>
 
-        </div>
+                <div class="row center">
+                    <div class="col s12 m3 offset-m3">
+                        <img v-if="imageFileUrl" style="max-height:50vh" v-bind:src="imageFileUrl">
+                    </div>
+                </div>
+                <div class="row">
+                    <div v-if="imageFileUrl" class="col s12 m3 offset-m3">
+                        <button class="waves-effect waves-light btn" @click="uploadFile">Submit</button>
+                        <button class="waves-effect waves-light btn" @click="clearForm">Reset Form</button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div v-if="loading">
+                        <div class='center-align'>
+                            <div class="preloader-wrapper big active">
+                                <div class="spinner-layer spinner-blue">
+                                    <div class="circle-clipper left">
+                                    <div class="circle"></div>
+                                    </div><div class="gap-patch">
+                                    <div class="circle"></div>
+                                    </div><div class="circle-clipper right">
+                                    <div class="circle"></div>
+                                    </div>
+                                </div>
+
+                                <div class="spinner-layer spinner-red">
+                                    <div class="circle-clipper left">
+                                    <div class="circle"></div>
+                                    </div><div class="gap-patch">
+                                    <div class="circle"></div>
+                                    </div><div class="circle-clipper right">
+                                    <div class="circle"></div>
+                                    </div>
+                                </div>
+
+                                <div class="spinner-layer spinner-yellow">
+                                    <div class="circle-clipper left">
+                                    <div class="circle"></div>
+                                    </div><div class="gap-patch">
+                                    <div class="circle"></div>
+                                    </div><div class="circle-clipper right">
+                                    <div class="circle"></div>
+                                    </div>
+                                </div>
+
+                                <div class="spinner-layer spinner-green">
+                                    <div class="circle-clipper left">
+                                    <div class="circle"></div>
+                                    </div><div class="gap-patch">
+                                    <div class="circle"></div>
+                                    </div><div class="circle-clipper right">
+                                    <div class="circle"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div v-if="breed" class="col s12 m3 offset-m3">
+                        <span>[[breed]] ([[probability]])</span>
+                    </div>
+
+                </div>
+                
+                
+                
+
+            </div>
+
+            
+
 
         
-    </div>
-    <div id="results">
-
-        
-        <div span v-if="breed">[[breed]] ([[probability]])</span>
-        
-
-    </div>
     
     
 
@@ -138,12 +197,12 @@ const app = new Vue({
             )
         },
         clearForm: function(){            
-            imageFileUrl = null
-            breed = null
-            probability = null
-            messages = []
-            errorMessages = []
-            loading=false
+            this.imageFileUrl = null
+            this.breed = null
+            this.probability = null
+            this.messages = []
+            this.errorMessages = []
+            this.loading=false
         }
             
 

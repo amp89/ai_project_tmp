@@ -56,6 +56,8 @@ INSTALLED_APPS = [
 ]
 
 LOGIN_REDIRECT_URL='interface_home'
+LOGOUT_REDIRECT_URL='interface_home'
+LOGIN_URL = 'interface_login'
 
 # Django-allauth google settings
 SITE_ID=1
@@ -169,3 +171,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+    '/var/www/static/',
+]

@@ -1,0 +1,47 @@
+ 
+{% extends 'base.html' %}
+
+
+{% block title %}
+<h1>Home</h1>
+{% endblock %}
+
+
+{% block content %}
+<div class="section no-pad-bot" id="index-banner">
+        <div class="container">
+            <br><br>
+            <h1 class="header center orange-text">Are you sure you want to logout?</h1>
+            <div class="row center">
+                <h5 class="header col s12 light">My journey learning AI.</h5>
+            </div>
+
+            {% comment %} <a href="javascript:void(0)" data-target="slide-out" class="sidenav-trigger"><i class="large material-icons">keyboard_arrow_right</i></a> {% endcomment %}
+
+            
+            <div class="row center">
+            
+                
+                <a href="javascript:void(0)" onclick="window.history.back();" class="btn-large waves-effect waves-light orange">Go Back</a>
+                
+                <form method="POST" action="{% url 'account_logout' %}">
+                    {% csrf_token %}
+                    <button type='submit' href="javascript:void(0)" onclick="window.history.back();" class="btn-large waves-effect waves-light orange">Logout</submit>
+                </form>
+
+                
+                <script>
+            function goBack() {
+            window.history.back();
+            }
+            </script>
+                
+            </div>
+    
+            <br><br>
+
+            </div>
+        </div>
+
+
+{% endblock %}

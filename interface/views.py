@@ -11,6 +11,14 @@ class HomeView(View):
         return render(request, "index.html")
 
 
-class DogClassificationView(View):
+class DogClassificationView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         return render(request, "dog_classification.html")
+
+class LogoutView(View):
+    def get(self, request, *args, **kwargs):
+        return render(request, "logout_confirmation.html")
+
+class LoginView(View):
+    def get(self, request, *args, **kwargs):
+        return render(request, "login.html")

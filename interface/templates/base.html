@@ -3,10 +3,32 @@
 {% load socialaccount %}
 {% load static %}
 
-<html>
 
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <title></title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+  <title>AI.AlexPeterson.tech</title>
+
+  <!-- CSS  -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="{% static 'materialize/css/materialize.min.css' %}" type="text/css" rel="stylesheet" media="screen,projection"/>
+  <link href="{% static 'materialize/css/style.css' %}" type="text/css" rel="stylesheet" media="screen,projection"/>
+
+  {% comment %} footer {% endcomment %}
+    <style>
+        body {
+            display: flex;
+            min-height: 100vh;
+            flex-direction: column;
+            
+        }
+
+        main {
+            flex: 1 0 auto;
+        }
+    </style>  
     <script src="https://cdn.jsdelivr.net/npm/axios@0.20.0/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
     <script>
@@ -15,36 +37,122 @@
     </script>
 
 </head>
-
-
 <body>
 
 
-    <div>
+  <nav class="light-blue lighten-1" role="navigation">
+  
+    <div class="nav-wrapper container">
+
+        <a href="#" data-target="nav-mobile" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+        
+        <a id="logo-container" href="{% url 'interface_home' %}" class="brand-logo">Alex Peterson's AI Stuff</a>
+      <ul class="right hide-on-med-and-down">
         {% if user.is_authenticated %}
-            <p>Welcome, {{ user.first_name }} !</p>
-            <form method="POST" action="{% url 'account_logout' %}">
-                {% csrf_token %}
-                <input type="submit" value="logout">
-            </form>
+            <li><em>Welcome, {{ user.first_name }}!</em></li>
+            <li>
+                <li><a href="{% url 'interface_logout' %}">Logout</a></li>
+            </li>
         {% else %}
             <a href="{% provider_login_url 'google' %}">Login with Google</a>
         {% endif %}
-    </div>
+      </ul>
 
-    <div>
-        {% block title %}
-            Title Placeholder
-        {% endblock %}
+      <ul id="nav-mobile" class="sidenav">
+        {% if user.is_authenticated %}
+            <li><em>Welcome, {{ user.first_name }}!</em></li>
+            <li><a href="{% url 'interface_logout' %}">Logout</a></li>
+        {% else %}
+            <a href="{% provider_login_url 'google' %}">Login with Google</a>
+        {% endif %}
+      </ul>
+      
     </div>
+    
+        <li><a class="white-text" href="mailto:contact@alexpeterson.tech">contact@alexpeterson.tech</a></li>
+            <li><a class="white-text" target="_blank" href="https://blog.alexpeterson.tech">Blog</a></li>
+  </nav>
 
-    <div>
+<ul id="slide-out" class="sidenav">
+    <li><a class="subheader">Projects</a></li>
+    <li><a href="{% url 'interface_dog_identifier' %}">Dog Identifier</a></li>
+    <li><div class="divider"></div></li>
+    <li><a class="subheader">Links</a></li>
+    <li><a href="mailto:contact@alexpeterson.tech">contact@alexpeterson.tech</a></li>
+    <li><a target="_blank" href="https://blog.alexpeterson.tech">Blog</a></li>
+    
+</ul>
+
+
+<a href="#" data-target="slide-out" class="sidenav-trigger  btn-floating pulse" style="margin-left:5px; margin-top:5px;"><i class="large material-icons">menu</i></a>
+
+    <main>
         {% block content %}
-        Content Placeholder
         {% endblock %}
+
+
+
+    </main>
+  {% comment %} add  style="position:fixed;bottom:0;left:0;width:100%;" {% endcomment %}
+
+
+  <footer class="page-footer orange" 
+    {% comment %} style="position:fixed;bottom:0;left:0;width:100%;" {% endcomment %}
+    >
+    <div class="container">
+      <div class="row">
+        <div class="col l6 s12">
+          <h5 class="white-text">About Me</h5>
+          <p class="grey-text text-lighten-4">I do stuff and things</p>
+
+
+        </div>
+        <div class="col l3 s12">
+            <h5  class="white-text">About</h5>
+          <ul>
+            <li><a class="white-text" href="javascript:void(0);">Privacy</a></li>
+            <li><a class="white-text" href="javascript:void(0);">Terms of Service</a></li>
+          </ul>
+        </div>
+        <div class="col l3 s12">
+          <h5 class="white-text">Connect</h5>
+          <ul>
+            <li><a class="white-text" href="mailto:contact@alexpeterson.tech">contact@alexpeterson.tech</a></li>
+            <li><a class="white-text" target="_blank" href="https://blog.alexpeterson.tech">Blog</a></li>
+          </ul>
+        </div>
+      </div>
     </div>
+    <div class="footer-copyright">
+      <div class="container">
+        &copy; Alex Peterson, 2020  
+      </div>
+    </div>
+  </footer>
 
-</body>
+
+  <!--  Scripts-->
+  <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  
+  <script src="{% static 'materialize/js/materialize.min.js' %}" ></script>
+  <script src="{% static 'materialize/js/init.js' %}" ></script>
 
 
+  <script>
+
+$(document).ready(function(){
+    $('.collapsible').collapsible();
+  });
+
+document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('.sidenav');
+    {% comment %} var instances = M.Sidenav.init(elems, options); {% endcomment %}
+    var instances = M.Sidenav.init(elems);
+  });
+
+  
+
+  </script>
+
+  </body>
 </html>
