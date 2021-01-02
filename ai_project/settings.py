@@ -46,12 +46,14 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
-    'allauth.socialaccount.providers.google'
+    'allauth.socialaccount.providers.google',
     # /
 
     'dog_classifier_api',
     'interface',
 ]
+
+LOGIN_REDIRECT_URL='interface_home'
 
 # Django-allauth google settings
 SITE_ID=1

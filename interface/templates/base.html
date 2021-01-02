@@ -1,0 +1,50 @@
+
+ 
+{% load socialaccount %}
+{% load static %}
+
+<html>
+
+<head>
+    <title></title>
+    <script src="https://cdn.jsdelivr.net/npm/axios@0.20.0/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
+    <script>
+        axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
+        axios.defaults.xsrfCookieName = "csrftoken";
+    </script>
+
+</head>
+
+
+<body>
+
+
+    <div>
+        {% if user.is_authenticated %}
+            <p>Welcome, {{ user.first_name }} !</p>
+            <form method="POST" action="{% url 'account_logout' %}">
+                {% csrf_token %}
+                <input type="submit" value="logout">
+            </form>
+        {% else %}
+            <a href="{% provider_login_url 'google' %}">Login with Google</a>
+        {% endif %}
+    </div>
+
+    <div>
+        {% block title %}
+            Title Placeholder
+        {% endblock %}
+    </div>
+
+    <div>
+        {% block content %}
+        Content Placeholder
+        {% endblock %}
+    </div>
+
+</body>
+
+
+</html>
