@@ -16,6 +16,8 @@
   <link href="{% static 'materialize/css/materialize.min.css' %}" type="text/css" rel="stylesheet" media="screen,projection"/>
   <link href="{% static 'materialize/css/style.css' %}" type="text/css" rel="stylesheet" media="screen,projection"/>
 
+
+
   {% comment %} footer {% endcomment %}
     <style>
         body {
@@ -40,7 +42,7 @@
 <body>
 
 
-  <nav class="light-blue lighten-1" role="navigation">
+  <nav class="grey darken-4" role="navigation">
   
     <div class="nav-wrapper container">
 
@@ -80,11 +82,17 @@
     <li><a class="subheader">Links</a></li>
     <li><a href="mailto:contact@alexpeterson.tech">contact@alexpeterson.tech</a></li>
     <li><a target="_blank" href="https://blog.alexpeterson.tech">Blog</a></li>
-    
+    <li><div class="divider"></div></li>
+    {% if user.is_authenticated %}
+        <li><a href="{% url 'interface_logout' %}">Logout</a></li>
+    {% else %}
+        <a href="{% provider_login_url 'google' %}">Login with Google</a>
+    {% endif %}
+
 </ul>
 
 
-<a href="#" data-target="slide-out" class="sidenav-trigger  btn-floating pulse" style="margin-left:5px; margin-top:5px;"><i class="large material-icons">menu</i></a>
+<a href="#" data-target="slide-out" class="sidenav-trigger grey darken-4 btn-floating pulse" style="margin-left:10px; margin-top:10px;"><i class="large material-icons">menu</i></a>
 
     <main>
         {% block content %}
@@ -96,22 +104,20 @@
   {% comment %} add  style="position:fixed;bottom:0;left:0;width:100%;" {% endcomment %}
 
 
-  <footer class="page-footer orange" 
-    {% comment %} style="position:fixed;bottom:0;left:0;width:100%;" {% endcomment %}
-    >
+  <footer class="page-footer grey darken-3" >
     <div class="container">
       <div class="row">
         <div class="col l6 s12">
           <h5 class="white-text">About Me</h5>
-          <p class="grey-text text-lighten-4">I do stuff and things</p>
+          <p class="grey-text text-lighten-4">I do some stuff, and ocassionally some things. BUT! Sometimes I do things, with ocassional stuff.</p>
 
 
         </div>
         <div class="col l3 s12">
             <h5  class="white-text">About</h5>
           <ul>
-            <li><a class="white-text" href="javascript:void(0);">Privacy</a></li>
-            <li><a class="white-text" href="javascript:void(0);">Terms of Service</a></li>
+            <li><a class="white-text" href="{% url 'interface_privacy' %}">Privacy</a></li>
+            <li><a class="white-text" href="{% url 'interface_terms' %}">Terms of Service</a></li>
           </ul>
         </div>
         <div class="col l3 s12">
@@ -139,18 +145,22 @@
 
 
   <script>
+    
+    document.addEventListener("DOMContentLoaded", function(){
+        document.addEventListener('DOMContentLoaded', function() {
+            var elems = document.querySelectorAll('.collapsible');
+            var instances = M.Collapsible.init(elems);
+        });
 
-$(document).ready(function(){
-    $('.collapsible').collapsible();
-  });
+        document.addEventListener('DOMContentLoaded', function() {
+            var elems = document.querySelectorAll('.sidenav');
+            {% comment %} var instances = M.Sidenav.init(elems, options); {% endcomment %}
+            var instances = M.Sidenav.init(elems);
+        });
+    });
+    
 
-document.addEventListener('DOMContentLoaded', function() {
-    var elems = document.querySelectorAll('.sidenav');
-    {% comment %} var instances = M.Sidenav.init(elems, options); {% endcomment %}
-    var instances = M.Sidenav.init(elems);
-  });
-
-  
+    
 
   </script>
 

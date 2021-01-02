@@ -1,6 +1,6 @@
  
 {% extends 'base.html' %}
-
+{% load static %}
 
 {% block content %}
 
@@ -9,35 +9,39 @@
 
     
 
-            <div class='container'>
-                
+            <div class='container'>                
                 <div  v-if="!imageFileUrl" class="row center">
-                    <h3 class="header center orange-text">
+                    <h3 class="header center dark-grey-text">
                         Upload a dog photo to get started!
-                    </h3>
-            
-                </div>
-                
-                <div class="row center">
-                    <div class="col s12 m3 offset-m3">
-                            <div class="file-field input-field">
-                                <div class="waves-effect waves-light btn">
-                                    Upload a Dog Photo                            
-                                    <input id="uploadFile" type="file" name="uploadFile" @change=changeUploadFile>
-                                </div>
-                            </div>
-                    </div>
+                    </h3>            
                 </div>
 
                 <div class="row center">
                     <div class="col s12 m3 offset-m3">
-                        <img v-if="imageFileUrl" style="max-height:50vh" v-bind:src="imageFileUrl">
+                        <div class="file-field input-field">
+                            <div class="waves-effect waves-light btn grey darken-4">
+                                Upload a Dog Photo
+                                <br>                 
+                                <input id="uploadFile" type="file" name="uploadFile" @change=changeUploadFile>
+                            </div>
+                        </div>                            
+                    </div>
+                </div>
+                <div class="row center">
+                    <small>
+                        File must be under 5mb, and .jpg/.jpeg formats are recommended.        
+                    </small>
+                </div>
+
+
+                <div class="row center">
+                    <div class="col s12 m3 offset-m3">
+                        <img v-if="imageFileUrl" style="max-height:45vh" v-bind:src="imageFileUrl">
                     </div>
                 </div>
                 <div class="row">
-                    <div v-if="imageFileUrl" class="col s12 m3 offset-m3">
-                        <button class="waves-effect waves-light btn" @click="uploadFile">Submit</button>
-                        <button class="waves-effect waves-light btn" @click="clearForm">Reset Form</button>
+                    <div v-if="imageFileUrl" class="col s12 m6 offset-m3">
+                        <button class="waves-effect waves-light btn grey darken-4" @click="uploadFile">Submit</button>
                     </div>
                 </div>
                 <div class="row">
@@ -87,8 +91,30 @@
                         </div>
 
                     </div>
-                    <div v-if="breed" class="col s12 m3 offset-m3">
-                        <span>[[breed]] ([[probability]])</span>
+                    <div v-if="breed && !loading" class="col s12 m8 offset-m3 dark-grey-text" style="font-size:1.3em">
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td>Breed</td>
+                                    <td>[[breed]]  <i class="material-icons">pets</i></td>
+                                </tr>
+                                <tr>
+                                    <td>Prediction Confidence Level</td>
+                                    <td>[[probability]]%
+                                        <i v-if="raw_probability > 75" class="material-icons">sentiment_very_satisfied</i>
+                                        <i v-else-if="raw_probability > 60" class="material-icons">sentiment_satisfied</i>
+                                        <i v-else-if="raw_probability > 35" class="material-icons">sentiment_neutral</i>
+                                        <i v-else-if="raw_probability > 15" class="material-icons">sentiment_dissatisfied</i>
+                                        <i v-else class="material-icons">sentiment_very_dissatisfied</i>
+                                    </td>
+                                </tr>
+                                
+
+
+                            </tbody>
+                        <table>
+
+    
                     </div>
 
                 </div>
@@ -108,6 +134,12 @@
 
 </div>
 
+<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+
+<script src="{% static 'materialize/js/materialize.min.js' %}" ></script>
+<script src="{% static 'materialize/js/init.js' %}" ></script>
+
+
 
 <script>
 
@@ -123,11 +155,13 @@ const app = new Vue({
         
         imageFileUrl: null,
         breed: null,
+        raw_probability: null,
         probability: null,
         
         messages: [],
         errorMessages: [],
         loading: false,
+        
     },
     methods: {
         healthCheck: function(){
@@ -183,8 +217,8 @@ const app = new Vue({
             axios.post(classifyURL, formData).then(
                 r => {
                     this.breed = r.data.breed
-                    let prob = r.data.probability*100
-                    this.probability = prob.toFixed(3) + "% Confident"
+                    this.raw_probability = r.data.probability*100
+                    this.probability = this.raw_probability.toFixed(2)
                     this.loading = false
                 }
             ).catch(
@@ -207,40 +241,33 @@ const app = new Vue({
             
 
     },
-    computed: {
 
-
-    },
     mounted:function(){
         //do this when mounted
         this.healthCheck()
         this.authHealthCheck()
+
+        setTimeout(function(){
+            
+            var elems = document.querySelectorAll('.collapsible');
+            var instances = M.Collapsible.init(elems);
+
+            var elems = document.querySelectorAll('.sidenav');            
+            var instances = M.Sidenav.init(elems);
+        
+
+        }, 3000)
+            
+
+        
+
+        
+
     }
 
 })
 
 </script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
