@@ -9,3 +9,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 class HomeView(View):
     def get(self, request, *args, **kwargs):
         return render(request, "index.html")
+
+
+class DogClassificationView(View):
+    def get(self, request, *args, **kwargs):
+        return render(request, "dog_classification.html")

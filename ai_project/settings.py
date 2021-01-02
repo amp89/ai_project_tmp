@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 from pathlib import Path
 
+# TODO: make envs
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -25,7 +27,7 @@ SECRET_KEY = 'qfomc3n+k08b4o!u)v$qzepq8fd%kv&_12_m==r(@8)k-1t(x('
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost']
 
 
 # Application definition
@@ -57,6 +59,7 @@ LOGIN_REDIRECT_URL='interface_home'
 
 # Django-allauth google settings
 SITE_ID=1
+
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
         'SCOPE': [
@@ -68,6 +71,23 @@ SOCIALACCOUNT_PROVIDERS = {
         }
     }
 }
+
+# Django Rest Framework Settings:
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        # 'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ]
+}
+
+
+
+# START: dog classifier api settings
+DOG_CLASSIFIER_API_MAX_UPLOAD_BYTES = 10000000 # 10 mb
+DOG_CLASSIFIER_API_MODEL_PATH = BASE_DIR/'data'/'dog_model.pkl' # 10 mb
+
+# END: dog classifier api settings
+
 
 
 MIDDLEWARE = [

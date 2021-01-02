@@ -1,0 +1,188 @@
+ 
+{% extends 'base.html' %}
+
+
+{% block title %}
+<h1>Dog Identifier</h1>
+{% endblock %}
+
+
+{% block content %}
+
+
+<div id="dogApp">
+
+    <div id="uploadBox">
+
+        <div v-if="loading">
+            Loading
+        </div>
+
+        <div v-else>
+            <label for="uploadFile">Dog Pic: </label>
+            <br>
+            <input id="uploadFile" type="file" name="uploadFile" @change=changeUploadFile>
+            <br>
+            
+            <img v-if="imageFileUrl" v-bind:src="imageFileUrl">
+            <br>
+    
+            <button @click="uploadFile">Submit</button>
+            <button @click="clearForm">Reset Form</button>
+            <br>
+
+
+        </div>
+
+        
+    </div>
+    <div id="results">
+
+        
+        <div span v-if="breed">[[breed]] ([[probability]])</span>
+        
+
+    </div>
+    
+    
+
+
+</div>
+
+
+<script>
+
+const healthCheckURL = "{% url 'dog_classifier_api_health_check' %}"
+const authHealthCheckURL = "{% url 'dog_classifier_api_auth_health_check' %}"
+const classifyURL = "{% url 'dog_classifier_api_classify' %}"
+
+
+const app = new Vue({
+    delimiters: ["[[", "]]"],
+    el: "#dogApp",
+    data: {
+        
+        imageFileUrl: null,
+        breed: null,
+        probability: null,
+        
+        messages: [],
+        errorMessages: [],
+        loading: false,
+    },
+    methods: {
+        healthCheck: function(){
+            axios.get(healthCheckURL).then(
+                r => {
+                    console.log(r)
+                }
+            ).catch(
+                e => {
+                    console.error(e)
+                }
+            )
+            
+        },
+        authHealthCheck: function(){
+            axios.get(authHealthCheckURL).then(
+                r => {
+                    console.log(r)
+                }
+            ).catch(
+                e => {
+                    console.error(e)
+                }
+            )
+            
+        },        
+        classifyDog: function(){
+            axios.post(classifyURL).then(
+                r => {
+                    console.log(r)
+                    
+                }
+            ).catch(
+                e => {
+                    console.error(e)
+                }
+            )
+            
+        },
+        changeUploadFile: function(e){
+            let file = e.target.files[0]
+            this.imageFileUrl = URL.createObjectURL(file)
+            
+        },
+        
+        uploadFile: function(){
+            this.loading = true
+            console.log("imageFileUrl: " + this.imageFileUrl)
+            console.log("upload")
+            let formData = new FormData()
+            formData.append('file', document.getElementById("uploadFile").files[0])
+
+            axios.post(classifyURL, formData).then(
+                r => {
+                    this.breed = r.data.breed
+                    let prob = r.data.probability*100
+                    this.probability = prob.toFixed(3) + "% Confident"
+                    this.loading = false
+                }
+            ).catch(
+                e => {
+                    this.loading = false
+                    alert("Failed")
+                    console.error(e)
+                    
+                }
+            )
+        },
+        clearForm: function(){            
+            imageFileUrl = null
+            breed = null
+            probability = null
+            messages = []
+            errorMessages = []
+            loading=false
+        }
+            
+
+    },
+    computed: {
+
+
+    },
+    mounted:function(){
+        //do this when mounted
+        this.healthCheck()
+        this.authHealthCheck()
+    }
+
+})
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% endblock %}
