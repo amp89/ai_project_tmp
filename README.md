@@ -1,4 +1,4 @@
 # ai_project_tmp
-Dog Classification App for fun, not finished
+App to house AI projects, (not very accurate) Dog Classification App for fun, not finished
 
 https://ai.alexpeterson.tech
